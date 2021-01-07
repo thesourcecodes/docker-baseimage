@@ -1,5 +1,5 @@
 # Set global vars
-ARG REL=bionic
+ARG REL=focal
 ARG ARCH=amd64
 
 #Use alpine as base-build image to pull the ubuntu cloud image from: https://partner-images.canonical.com and create rootfs.
