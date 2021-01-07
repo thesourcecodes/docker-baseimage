@@ -1,0 +1,48 @@
+#!/usr/bin/with-contenv bash
+
+#Set helper vars
+CODENAME="$(cat /etc/os-release | grep 'UBUNTU_CODENAME' | cut -d '=' -f 2)"
+VERSION="$(cat /etc/os-release | grep 'VERSION=' | cut -d '=' -f 2)"
+BUILDDATE=`date`
+
+PUID=${PUID:-911}
+PGID=${PGID:-911}
+
+groupmod -o -g "$PGID" abc
+usermod -o -u "$PUID" abc
+
+echo "
+-------------------------------------
+#############            Powered by:            #############
+
+██╗   ██╗██████╗ ██╗   ██╗███╗   ██╗████████╗██╗   ██╗     ██████╗ ██████╗ ██████╗ ███████╗
+██║   ██║██╔══██╗██║   ██║████╗  ██║╚══██╔══╝██║   ██║    ██╔════╝██╔═══██╗██╔══██╗██╔════╝
+██║   ██║██████╔╝██║   ██║██╔██╗ ██║   ██║   ██║   ██║    ██║     ██║   ██║██████╔╝█████╗  
+██║   ██║██╔══██╗██║   ██║██║╚██╗██║   ██║   ██║   ██║    ██║     ██║   ██║██╔══██╗██╔══╝  
+╚██████╔╝██████╔╝╚██████╔╝██║ ╚████║   ██║   ╚██████╔╝    ╚██████╗╚██████╔╝██║  ██║███████╗
+ ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝   ╚═╝    ╚═════╝      ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
+
+OS: Ubuntu Core ${VERSION}
+Image source: https://partner-images.canonical.com/core/${CODENAME}/current/ubuntu-${CODENAME}-core-cloudimg-amd64-root.tar.gz 
+Build source: DockerHub.com 
+Build date: ${BUILDDATE} 
+Mods: s6 overlay 
+Maintainer: THEcontainers 
+-------------------------------------"
+echo "
+GID/UID :
+User uid:    $(id -u abc)
+User gid:    $(id -g abc)
+-------------------------------------
+"
+# Set permissions.
+chown abc:abc /app
+chown abc:abc /config
+chown abc:abc /defaults
+
+#drop helper variables used in this script.
+unset CODENAME
+unset VERSION
+unset BUILDDATE
+unset PUID
+unset PGID
